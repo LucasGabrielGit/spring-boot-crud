@@ -2,13 +2,17 @@ package br.com.app.ProjectCRUD.rest;
 
 import br.com.app.ProjectCRUD.entity.Fornecedor;
 import br.com.app.ProjectCRUD.repository.FornecedorRepository;
+import br.com.app.ProjectCRUD.rest.DTO.FornecedorDTO;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -38,14 +42,6 @@ public class FornecedorController {
                 );
     }
 
-    @DeleteMapping("{id}")
-    public void delete(@PathVariable Integer id) {
-        fornecedorRepository.findById(id).map(fornecedor -> {
-            fornecedorRepository.delete(fornecedor);
-            return Void.TYPE;
-        });
-    }
-
     @PutMapping("{id}")
     @ResponseStatus(HttpStatus.OK)
     public void update(@PathVariable Integer id, @RequestBody Fornecedor fornecedorAtualizado) {
@@ -57,8 +53,26 @@ public class FornecedorController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Fornecedor salvar(@RequestBody Fornecedor fornecedor) {
+    public Fornecedor salvar(@RequestBody FornecedorDTO fornecedorDTO) {
+        Fornecedor fornecedor = new Fornecedor();
+
+        LocalDate data = LocalDate.parse(fornecedorDTO.getData_cadastro(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        fornecedor.setNome(fornecedorDTO.getNome());
+        fornecedor.setDataCadastro(data);
+        fornecedor.setTipo(fornecedorDTO.getTipo());
         return fornecedorRepository.save(fornecedor);
+    }
+
+
+    @DeleteMapping("{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Integer id) {
+        fornecedorRepository.findById(id).map(
+                fornecedor -> {
+                    fornecedorRepository.delete(fornecedor);
+                    return Void.TYPE;
+                }
+        ).orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST));
     }
 
 }

@@ -6,16 +6,14 @@ import br.com.app.ProjectCRUD.entity.Produto;
 import br.com.app.ProjectCRUD.repository.CategoriaRepository;
 import br.com.app.ProjectCRUD.repository.FornecedorRepository;
 import br.com.app.ProjectCRUD.repository.ProdutosRepository;
+import br.com.app.ProjectCRUD.rest.DTO.ProdutoDTO;
 import br.com.app.ProjectCRUD.util.BigDecimalConverter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor

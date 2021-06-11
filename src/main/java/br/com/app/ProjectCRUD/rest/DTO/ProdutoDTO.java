@@ -1,4 +1,4 @@
-package br.com.app.ProjectCRUD.rest;
+package br.com.app.ProjectCRUD.rest.DTO;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

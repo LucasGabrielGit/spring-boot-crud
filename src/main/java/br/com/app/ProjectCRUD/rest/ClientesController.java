@@ -2,11 +2,14 @@ package br.com.app.ProjectCRUD.rest;
 
 import br.com.app.ProjectCRUD.entity.Cliente;
 import br.com.app.ProjectCRUD.repository.ClientesRepository;
+import br.com.app.ProjectCRUD.rest.DTO.ClienteDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
@@ -22,7 +25,15 @@ public class ClientesController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Cliente salvar(@RequestBody Cliente cliente) {
+    public Cliente salvar(@RequestBody ClienteDTO clienteDTO) {
+        Cliente cliente = new Cliente();
+        LocalDate dataRegistro = LocalDate.parse(clienteDTO.getData_registro(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        LocalDate dataaNascimento = LocalDate.parse(clienteDTO.getData_nascimento(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        cliente.setNome(clienteDTO.getNome());
+        cliente.setCpf(clienteDTO.getCpf());
+        cliente.setDataNascimento(dataaNascimento);
+        cliente.setDataRegistro(dataRegistro);
+
         return repository.save(cliente);
     }
 
