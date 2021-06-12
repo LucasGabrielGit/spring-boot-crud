@@ -1,5 +1,6 @@
 package br.com.app.ProjectCRUD.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Data;
@@ -27,6 +28,9 @@ public class Fornecedor implements Serializable {
     private String nome;
 
     @Column(name = "data_cadastro")
+    @JsonFormat(shape = JsonFormat.Shape.STRING,
+            pattern = "dd/MM/yyyy",
+            timezone = "America/Brazil")
     private LocalDate dataCadastro;
 
     @Column(name = "tipo")
